@@ -1,0 +1,6 @@
+Word List from Iterator: 
+ <Piya!>  <How>  <are>  <you?>  <When>  <is>  <Mammy> 
+----
+Sorted Word List from Iterators:
+ *How*  *Mammy*  *Piya!*  *When*  *are*  *coming?*  *is* 
+----
