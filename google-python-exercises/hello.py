@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/python3
 # Copyright 2010 Google Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -19,6 +19,10 @@ and run Python code; now you just need to learn Python!
 
 import sys
 
+def Hello(name):
+  s = "Hello '%s'" %name
+  return s
+
 # Define a main() function that prints a little greeting.
 def main():
   # Get the name from the command line, using 'World' as a fallback.
@@ -26,7 +30,8 @@ def main():
     name = sys.argv[1]
   else:
     name = 'World'
-  print 'Hello', name
+  s = Hello(name)
+  print(s)
   
 # This is the standard boilerplate that calls the main() function.
 if __name__ == '__main__':
