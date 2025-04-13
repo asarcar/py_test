@@ -1,0 +1,15 @@
+# Format: 
+#   NUMBER    COLOR       SHAPE       SHADE
+#   ------    -----       -----       -----
+0   TWO       PURPLE      DIAMOND     SOLID
+1   THREE     PURPLE      OVAL        HOLLOW
+2   THREE     PURPLE      SQUIGLE     SHADE
+3   ONE       GREEN       SQUIGLE     SHADE
+4   ONE       RED         DIAMOND     SOLID
+5   ONE       RED         SQUIGLE     SHADE
+6   THREE     GREEN       SQUIGLE     HOLLOW
+7   THREE     PURPLE      DIAMOND     SOLID
+8   TWO       PURPLE      OVAL        SOLID
+9   TWO       PURPLE      OVAL        SHADE
+10  THREE     GREEN       OVAL        SOLID
+11  ONE       GREEN       OVAL        HOLLOW
