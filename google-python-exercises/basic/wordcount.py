@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/python3
 # Copyright 2010 Google Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -37,6 +37,7 @@ print_words() and print_top().
 
 """
 
+import os
 import sys
 
 # +++your code here+++
@@ -45,24 +46,74 @@ import sys
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
+# CONSTANTS
+TOPCOUNT      = 20
+COUNTWORDS    = '--count'
+TOPCOUNTWORDS = '--topcount'
+
+def hash_words(filename):
+  """Creates a dictionary of '<word> <count>' with all words lower cased for a given file."""
+  assert(os.path.isfile(filename))
+  filehandle = open(filename, 'r')
+  assert(filehandle is not None)
+
+  word_hash = {}
+
+  for line in filehandle:
+    word_list = line.split()
+    for word in word_list:
+      w = word.lower()
+      # increment the count associated with the word in the dictionary
+      # if the words does not exist, assume the default value is 0
+      word_hash[w] = word_hash.get(w, 0) + 1 
+  filehandle.close()
+  return word_hash
+
 ###
+def print_words(filename):
+  """Prints one per line '<word> <count>' sorted by word for the given file."""
+  word_hash = hash_words(filename)
+  sorted_word_counts = sorted(word_hash.items(), key=lambda tuple: tuple[0])
+  for (word, count) in sorted_word_counts:
+    print(word, count)
+  return
+
+###
+def print_top(filename):
+  """Prints top N words '<word> <count>' sorted by word for the given file."""
+  word_hash = hash_words(filename)
+  # sort alphabetically and then sort on count - assuming that STABLE sorting
+  sorted_word_counts = sorted(word_hash.items(), key=lambda tuple: tuple[0])
+  top_word_by_count = sorted(sorted_word_counts, key=lambda tuple: tuple[1], reverse=True)
+  N = TOPCOUNT
+  top_N_words = top_word_by_count[:N]
+  for (word, count) in top_N_words:
+    print(word, count)
+  return
+
 
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 def main():
   if len(sys.argv) != 3:
-    print 'usage: ./wordcount.py {--count | --topcount} file'
+    print('usage: ./wordcount.py {%s | %s} filename' %(COUNTWORDS, TOPCOUNTWORDS))
     sys.exit(1)
 
   option = sys.argv[1]
   filename = sys.argv[2]
-  if option == '--count':
-    print_words(filename)
-  elif option == '--topcount':
-    print_top(filename)
-  else:
-    print 'unknown option: ' + option
+  if option != COUNTWORDS and option != TOPCOUNTWORDS:
+    print('unknown option: ' + option)
     sys.exit(1)
+
+  # option == --count:
+  if option == COUNTWORDS:
+    print_words(filename)
+    return
+  
+  # option == --topcount:
+  print_top(filename)
+  
+  return
 
 if __name__ == '__main__':
   main()
