@@ -9,6 +9,9 @@ from enum import Enum
 import os
 import sys
 
+# non-standard library imports
+from asarcar_package import check_value, file_exists, get_file_extension
+
 # modulo 3
 class Number(Enum):
   ONE     = 0
@@ -68,9 +71,6 @@ class Card:
   def get_attribute_value(self, pos):
     return self.attributes[pos].value
 
-def check_value(value, expected):
-  assert value == expected, f"Value is {value}, but expected {expected}"  
-
 def is_set(cards):
   check_value(len(cards), NumSet)
   
@@ -101,7 +101,6 @@ def print_cards(cards):
 
 def read_cards(filename):
   """Creates an array of cards from game set reading from filename."""
-  assert(os.path.isfile(filename))
   filehandle = open(filename, 'r')
   cards = []
 
@@ -115,17 +114,18 @@ def read_cards(filename):
   return(cards)
 
 def print_sets(cards):
-  num_sets  = 0
+  num_set   = 0
   num_cards = len(cards)
+  print("\nSets Found:\n-------------")
   for first in range(num_cards-2):
     for second in range(first+1, num_cards-1):
       for third in range(second+1, num_cards):
         if (not is_set([cards[first], cards[second], cards[third]])): continue
         # we've found a set!
-        num_sets = num_sets + 1
-        print("(set# %i [%i %s]\t[%i %s]\t[%i %s]" 
-              %(num_sets, first, cards[first], second, cards[second], third, cards[third]))
-        
+        print("(%c)\t[%i\t%s]\t[%i\t%s]\t[%i\t%s]" 
+              %(chr(ord('a')+num_set), first, cards[first], second, cards[second], third, cards[third]))
+        num_set += 1
+  print("Total Sets: %i\n-------------" % num_set)
   return
 
 # This basic command line argument parsing code is provided and
@@ -136,6 +136,12 @@ def main():
     sys.exit(1)
 
   filename = sys.argv[1]
+  if not file_exists(filename):
+    print('File %s does not exist' % filename)
+    sys.exit(1)
+  if get_file_extension(filename) != '.txt':
+    print('File %s is not a .txt file' % filename)
+    sys.exit(1)
   cards = read_cards(filename)
   print_cards(cards)
   print_sets(cards)

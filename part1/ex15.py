@@ -1,25 +1,34 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
-from sys import argv
-from os.path import exists
+import sys
 
-scr, src, dst = argv
+# non-standard library imports
+from asarcar_package import file_exists
 
-if exists(dst):
-    print "Dst File %s already exists: aborting copy operation" %dst
-    exit(0)
-elif exists(src) == False:
-    print "Src File %s does not exists: aborting copy operation" %scr
-    exit(0)
+def main():
+  if (len(sys.argv)!= 3):
+    print("Usage: %s <src_file> <dst_file>"%sys.argv[0])
+    sys.exit(1)
+  scr, src, dst = sys.argv
 
-ip_obj = open(src, "r")
-ftxt = ip_obj.read()
-ip_obj.close()
+  if file_exists(dst):
+    print("Dst File %s already exists: aborting copy operation"%dst)
+    sys.exit(0)
+  elif file_exists(src) == False:
+    print("Src File %s does not exists: aborting copy operation"%scr)
+    sys.exit(0)
 
-op_obj = open(dst, "w")
-op_obj.write(ftxt)
-op_obj.close()
+  ip_obj = open(src, "r")
+  ftxt = ip_obj.read()
+  ip_obj.close()
 
-print "%s: copied content from %s to %s" %(scr, src, dst)
+  op_obj = open(dst, "w")
+  op_obj.write(ftxt)
+  op_obj.close()
 
-exit(0)
+  print("%s: copied content from %s to %s"%(scr, src, dst))
+  return
+
+# This is the standard boilerplate that calls the main() function.
+if __name__ == '__main__':
+  main()

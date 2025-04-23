@@ -40,9 +40,12 @@ Could work on getting it to put in linebreaks around 70
 columns, so the output looks better.
 
 """
-import os
 import random
 import sys
+
+# non-standard library imports
+from asarcar_package import check_not_none, check_greater, file_exists
+
 
 NumArgs   = 2
 NumWords  = 200
@@ -51,24 +54,10 @@ MinWords  = 1
 MaxWords  = 999
 EmptyWord = ""
 
-# Generic check functions
-# Check if the value is None
-def check_not_none(value):
-  assert(value is not None), "Value is None"
-# Check if the value is expected
-def check_value(value, expected):
-  assert value == expected, f"Value is {value}, but expected {expected}"
-# Check if the value is greater than the expected value
-def check_greater(value, expected):
-  assert value > expected, f"Value is {value}, but expected greater than {expected}"
-# Check if the value is lesser than the expected value
-def check_lesser(value, expected):
-  assert value < expected, f"Value is {value}, but expected lesser than {expected}"
-
 def mimic_dict(filename):
   """Returns mimic dict mapping each word to list of words which follow it."""
   filehandle = open(filename, 'r')
-  check_not_none(filehandle is not None)
+  check_not_none(filehandle)
   # read the entire file into a single string
   text = filehandle.read()
   filehandle.close()
@@ -141,19 +130,19 @@ def print_mimic(mimic_dict, word, num_words=NumWords):
 def main():
   num_args = len(sys.argv)
   if num_args < NumArgs or num_args > NumArgs + 1:
-    print('usage: ./mimic.py file-to-read [num-words<%i-%i>]' % (MinWords, MaxWords))
+    print('usage: %s ip-file [num-words<%i-%i>]' % (sys.argv[0], MinWords, MaxWords))
     sys.exit(1)
 
   num_words = NumWords
-  if len(sys.argv) == NumArgs+1:
+  if num_args == NumArgs+1:
     num_words = int(sys.argv[2])
     if (num_words < MinWords or num_words > MaxWords):
-      print('usage: ./mimic.py file-to-read [num-words<%i-%i>]' % (MinWords, MaxWords))
+      print('usage: %s file-to-read [num-words<%i-%i>]' % (sys.argv[0], MinWords, MaxWords))
       sys.exit(1)
 
   file_name = sys.argv[1]
-  if (os.path.isfile(file_name) == False):
-    print('File does not exist: %s' % file_name)
+  if (not file_exists(file_name)):
+    print('I/P file does not exist: %s' % file_name)
     sys.exit(1)
 
   dict = mimic_dict(file_name)

@@ -1,30 +1,44 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
-from sys import argv
-from os.path import exists
+import sys
 
-scr, fname = argv
+# non-standard library imports
+from asarcar_package import file_exists
+
 
 def print_all_file(fobj):
-    print fobj.read()
+  # read the entire file into a string and print it
+  print(fobj.read())
 
 def rewind_file(fobj):
-    f.seek(0)
+  fobj.seek(0)
 
 def print_cur_line(line_num, fobj):
-    print line_num, fobj.readline(), 
+  print("%i: %s"%(line_num, fobj.readline()), end='')
 
-if exists(fname) == False:
-    print "Input file %s does not exist - aborting operation" %fname
-    exit(0)
+def main():
+  if (len(sys.argv) != 2):
+    print("Usage: %s <input_file>" % sys.argv[0])
+    sys.exit(1)
 
-f = open(fname, "r")
+  # Get the command line arguments
+  scr, fname = sys.argv
 
-print "File %s: content" %fname
-print_all_file(f)
-rewind_file(f)
+  if not file_exists(fname):
+    print("Input file %s does not exist - aborting operation" %fname)
+    sys.exit(0)
 
-for line in range(0, 3):
+  f = open(fname, "r")
+
+  print("File %s: content" %fname)
+  print_all_file(f)
+  rewind_file(f)
+
+  for line in range(0, 3):
     print_cur_line(line, f)
 
-f.close()
+  f.close()
+
+# This is the standard boilerplate that calls the main() function.
+if __name__ == '__main__':
+  main()

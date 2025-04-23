@@ -4,8 +4,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 
 import argparse
-import os
 import sys
+
+# non-standard library imports
+from asarcar_package import file_exists
 
 """A tiny Python program to check that file io is working.
 Try running this program from the command line like this:
@@ -13,7 +15,6 @@ Try running this program from the command line like this:
 That should print the contents of the file!
 """
 def cat_file(fname):
-  assert(os.path.isfile(fname))
   fh = open(fname, 'r')
   assert(fh is not None)
   for line in fh:
@@ -25,6 +26,9 @@ def main():
   parser.add_argument("filename", help="The name of the file to process")
   args = parser.parse_args()
   fname = args.filename
+  if not file_exists(fname):
+    print("I/P file does exist")
+    sys.exit(0)
   cat_file(fname)
 
 if __name__ == '__main__':
