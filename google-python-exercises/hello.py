@@ -37,13 +37,15 @@ def main():
   s = Hello(name)
   print(s)
 
-# Invoke hello.py by setting PYTHONPATH to the directory having
-# utils_asarcar package or by installing the package in your
-# virtual environment.
-# PYTHONPATH=$PWD_UTILS_ASARCAR hello.py
-# OR
+#
+# Invoke hello.py by either (a) installing external packages AND 
+# (b) installing your package in your virtual environment OR by 
+# setting PYTHONPATH to the directory that holds local packages:
 # pip install utils_asarcar
 # pip list # verify utils_asarcar is installed
+# OR 
+# PYTHONPATH=$DIR_PATH_WITH_LOCAL_PACKAGES hello.py
+
 # This is the standard boilerplate that calls the main() function.
 if __name__ == '__main__':
   main()
