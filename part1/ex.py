@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 x = "There are %d types of people." % 10
 binary = "binary"

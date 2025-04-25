@@ -1,9 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys
 
 # non-standard library imports
-from asarcar_package import file_exists
+from utils_asarcar import file_exists
 
 
 def print_all_file(fobj):

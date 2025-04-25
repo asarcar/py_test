@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # Copyright 2025 Arijit Sarcar.
 # Licensed under the Apache License, Version 2.0
@@ -10,7 +10,7 @@ import os
 import sys
 
 # non-standard library imports
-from asarcar_package import check_value, file_exists, get_file_extension
+from utils_asarcar import check_equals, file_exists, get_file_extension
 
 # modulo 3
 class Number(Enum):
@@ -72,7 +72,7 @@ class Card:
     return self.attributes[pos].value
 
 def is_set(cards):
-  check_value(len(cards), NumSet)
+  check_equals(len(cards), NumSet)
   
   # maintain a modulo 3 running count against each attribute
   parity = []
@@ -107,7 +107,7 @@ def read_cards(filename):
   for line in filehandle:
     if (line[0] == '#'): continue
     attr_list = line.split()
-    check_value(len(attr_list), NumAttrs+1)
+    check_equals(len(attr_list), NumAttrs+1)
     cards.append(Card(attr_list[1:]))
   filehandle.close()
 

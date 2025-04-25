@@ -1,9 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys
 
 # non-standard library imports
-from asarcar_package import file_exists
+from utils_asarcar import file_exists
 
 
 def secret_formula(sta_cnt, jb_mult, jar_div, crat_mod):

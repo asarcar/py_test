@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # Copyright 2025 Arijit Sarcar.
 # Licensed under the Apache License, Version 2.0

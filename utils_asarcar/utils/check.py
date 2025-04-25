@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # Copyright 2025 Arijit Sarcar.
 # Licensed under the Apache License, Version 2.0
@@ -11,7 +11,7 @@ def check_not_none(value) -> None:
   assert value is not None, "Value is None"
 
 # Check if the value is expected
-def check_value(value, expected) -> None:
+def check_equals(value, expected) -> None:
   assert value == expected, f"Value is {value}, but expected {expected}"
 
 # Check if the value is greater than the expected value

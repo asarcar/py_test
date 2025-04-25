@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # Copyright 2010 Google Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -20,7 +20,7 @@ and run Python code; now you just need to learn Python!
 import sys
 
 # non-standard library imports
-from asarcar_package import check_lesser
+from utils_asarcar import check_lesser
 
 def Hello(name):
   s = "Hello '%s'" %name
@@ -36,7 +36,14 @@ def main():
     name = 'World'
   s = Hello(name)
   print(s)
-  
+
+# Invoke hello.py by setting PYTHONPATH to the directory having
+# utils_asarcar package or by installing the package in your
+# virtual environment.
+# PYTHONPATH=$PWD_UTILS_ASARCAR hello.py
+# OR
+# pip install utils_asarcar
+# pip list # verify utils_asarcar is installed
 # This is the standard boilerplate that calls the main() function.
 if __name__ == '__main__':
   main()

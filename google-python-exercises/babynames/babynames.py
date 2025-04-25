@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # Copyright 2010 Google Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -11,7 +11,7 @@ import sys
 import re
 
 # non-standard library imports
-from asarcar_package import file_exists
+from utils_asarcar import file_exists
 
 # +++your code here+++
 SummaryString = 'summary'
