@@ -10,20 +10,24 @@
 def check_not_none(value) -> None:
   assert value is not None, "Value is None"
 
-# Check if the value is expected
-def check_equals(value, expected) -> None:
+# Check if the boolean value is expected
+def check_boolean(value: bool, expected: bool) -> None:
   assert value == expected, f"Value is {value}, but expected {expected}"
 
-# Check if the value is greater than the expected value
-def check_greater(value, expected) -> None:
+# Check if the integer value is expected
+def check_equals(value: int, expected: int) -> None:
+  assert value == expected, f"Value is {value}, but expected {expected}"
+
+# Check if the integer value is greater than the expected value
+def check_greater(value: int, expected: int) -> None:
   assert value > expected, f"Value is {value}, but expected greater than {expected}"
 
-# Check if the value is lesser than the expected value
-def check_lesser(value, expected) -> None:
+# Check if the integer value is lesser than the expected value
+def check_lesser(value: int, expected: int) -> None:
   assert value < expected, f"Value is {value}, but expected lesser than {expected}"
 
-# Check if the value is in the expected range(low, high) or [elem1, elem2, ...]
-def check_in_range(value, expected) -> None:
+# Check if the integer value is in the expected range(low, high) or [elem1, elem2, ...]
+def check_in_range(value: int, expected: int) -> None:
   assert value in expected, f"Value is {value}, but expected in {expected}"
 
 # check type is int

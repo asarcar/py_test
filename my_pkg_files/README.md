@@ -10,7 +10,7 @@ export MY_PKG_DIR=/tmp/dist
 rm -fr $MY_PKG_DIR 
 mkdir -p $MY_PKG_DIR
 
-## Builld
+## Build
 python3 -m build --outdir $MY_PKG_DIR
 
 ## API-Key

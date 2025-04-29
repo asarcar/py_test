@@ -6,8 +6,27 @@
 
 import os
 
-def file_exists(filename):
-  return os.path.exists(filename)
+def directory_exists(directory: str) -> bool:
+  if not os.path.exists(directory):
+    return False
+  return os.path.isdir(directory)
 
-def get_file_extension(filename):
+def split_path(path: str) -> tuple:
+  """
+  Splits the path into directory and file name
+  :param path: The path to split
+  :return: A tuple containing the directory and file name
+  """
+  norm_path = os.path.normpath(path)
+  if (not os.path.exists(norm_path)):
+    raise ValueError(f"Path '{norm_path}' is not a valid path")
+  directory, filename = os.path.split(path)
+  return directory, filename
+
+def file_exists(filename: str) -> bool:
+  if not os.path.exists(filename):
+    return False
+  return os.path.isfile(filename)
+
+def get_file_extension(filename: str) -> str:
   return os.path.splitext(filename)[1]

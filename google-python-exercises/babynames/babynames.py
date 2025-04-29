@@ -58,7 +58,7 @@ def extract_names(file_name):
   pattern = r'<h\d.*>Popularity in (\d+)</h\d>'
   year = re.search(pattern, text)
   if not year:
-    sys.stderr('No year found in file: %s' % file_name)
+    print(f'No year found in file: {file_name}', file=sys.stderr)
     sys.exit(1)  
   name_list = [year.group(1)]
 
