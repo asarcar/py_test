@@ -10,6 +10,8 @@ import sys
 import re
 import os
 import shutil
+import subprocess
+
 
 # non-standard library imports
 from utils_asarcar import check_boolean
@@ -79,32 +81,24 @@ def copy_special_files(abs_file_names: list, abs_dst_dir: str) -> None:
 
 #
 # Zip the special files to the directory specified by the user
-# We've not used the 'zip -j' command directly from the commands package
-# using commands.getstatusoutput(cmd) - this package is deprecated
-# and not recommended. Instead we are using the shutil.make_archive
-# however the zip file is created by putting all files in a directory
-# this may ignore files from different directories that are copied to the 
-# same directory.
-# Will fix it later by using subprocess.run(cmd, shell=True)
-# command = ["zip", "-j", zip_file, file1, file2, ]
+# command = ["zip", zip_filename, file1, file2, ]
 #
-def zip_special_files(abs_file_names: list, abs_dst_dir: str, abs_zip_file: str) -> None:
-  check_boolean(directory_exists(abs_dst_dir), True)
+def zip_files(zip_filename: str, files: list) -> None:
+  """
+  Creates a zip archive containing the specified files.
 
-  # Check if the zip file already exists
-  # Otherise create the zip archive
+  Args:
+    zip_filename: The name of the zip archive to create.
+    files: A list of file paths to include in the archive.
+  """
+  command = ["zip", zip_filename] + files
   try:
-    # Remove the file if it exists
-    full_abs_zip_file = abs_zip_file + '.' + ArchiveFormat
-    if file_exists(full_abs_zip_file):
-      print(f"Will overwrite existing zip file: {full_abs_zip_file}")
-    
-    # Create the zip archive
-    shutil.make_archive(abs_zip_file, ArchiveFormat, abs_dst_dir)
-    print(f"Successfully created {abs_zip_file} from {abs_dst_dir}")
-
-  except Exception as e:
-    print(f"An error occurred: {e}", file=sys.stderr)  
+    subprocess.run(command, check=True)
+    print(f"Successfully created {zip_filename}")
+  except subprocess.CalledProcessError as e:
+    print(f"Error creating {zip_filename}: {e}")
+  except FileNotFoundError:
+    print("The 'zip' command was not found. Ensure it is installed and in your PATH.")
   
   return
 
@@ -131,16 +125,20 @@ def get_abs_dirs(args: list) -> list:
     abs_dirs.append(abs_dir)
   return abs_dirs
 
-def main():
-  # This basic command line argument parsing code is provided.
-  # Add code to call your functions below.
+def process_args(args: list) -> tuple:
+  """Process command line arguments.
 
+  Args:
+    args: A list of command line arguments.
+
+  Returns:
+    A tuple containing the processed arguments, the directory to copy to,
+    and the zip file name.
+  """
+  todir = ''
+  tozip = ''
   arg_str1 = OptionPrefix + OptionString1
   arg_str2 = OptionPrefix + OptionString2
-
-  # Make a list of command line arguments, omitting the [0] element
-  # which is the script itself.
-  args = sys.argv[1:]
   if not args:
     print(f"usage: [{arg_str1} {OptionArg1}] [{arg_str2} {OptionArg2}] dir [dir ...]", 
           file=sys.stderr);
@@ -171,6 +169,31 @@ def main():
     print(f'error: must specify one or more dirs', file=sys.stderr)
     sys.exit(1)
 
+  return (args, todir, tozip)
+
+def print_special_files(abs_file_names: list) -> None:
+  """Prints the special files.
+
+  Args:
+    abs_file_names: A list of absolute file names.
+  """
+  print(f"Printing all special files and exiting as copy directory not set")
+  print(f"# of special files: {len(abs_file_names)}")
+  i = 0
+  for abs_file_name in abs_file_names:
+    i += 1
+    print(f"#{i}: {abs_file_name}")
+
+  return
+
+def main():
+  # This basic command line argument parsing code is provided.
+  # Add code to call your functions below.
+
+  # Make a list of command line arguments, omitting the [0] element
+  # which is the script itself.
+  (args, todir, tozip) = process_args(sys.argv[1:])
+
   # +++your code here+++
   # accumulate all the dirs form where we are extracting special files
   abs_dirs = get_abs_dirs(args)
@@ -187,17 +210,11 @@ def main():
   abs_dst_dir = os.path.abspath(todir)
   abs_cur_dir = os.path.abspath(os.getcwd())
 
-  if abs_dst_dir == abs_cur_dir:
-    print(f"Printing all special files and exiting as copy directory not set")
-    print(f"# of special files: {len(abs_file_names)}")
-    i = 0
-    for abs_file_name in abs_file_names:
-      i += 1
-      print(f"#{i}: {abs_file_name}")
-    return
-  
-  # Copy the special files to the todir directory
-  copy_special_files(abs_file_names, abs_dst_dir)
+  if not todir or abs_dst_dir == abs_cur_dir:
+    print_special_files(abs_file_names)
+  else:  
+    # Copy the special files to the todir directory
+    copy_special_files(abs_file_names, abs_dst_dir)
 
   # if tozip is not set, we are done
   if not tozip:
@@ -206,7 +223,7 @@ def main():
   # zip the special files -  get the absolute path of the zipfile. 
   # By default absolute path assumes the current working directory
   abs_zip_file = os.path.abspath(tozip)
-  zip_special_files(abs_file_names, abs_dst_dir, abs_zip_file)
+  zip_files(abs_zip_file, abs_file_names)
 
   return
 
