@@ -15,7 +15,7 @@ import subprocess
 
 # non-standard library imports
 from utils_asarcar import check_boolean
-from utils_asarcar import directory_exists, split_path, directory_exists
+from utils_asarcar import directory_exists, split_path
 from utils_asarcar import file_exists, get_file_extension
 
 # file constants

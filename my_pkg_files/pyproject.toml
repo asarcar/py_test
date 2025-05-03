@@ -3,7 +3,7 @@ requires = ["hatchling >= 1.27"]
 build-backend = "hatchling.build"
 [project]
 name = "utils_asarcar"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
   { name="Arijit Sarcar", email="asarcar@gmail.com" },
 ]
