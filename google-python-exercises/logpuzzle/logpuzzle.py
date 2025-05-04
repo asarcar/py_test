@@ -29,7 +29,7 @@ TemplatesDir  = 'templates'
 StaticDir     = 'static'
 LocalHost     = "0.0.0.0"
 IndexFileName = 'index.html'
-WebServerBase = 'http://code.google.com'
+PrefixHost    = 'http://'
 
 def read_urls(filename: str) -> list:
   """Returns a list of the puzzle urls from the given log file,
@@ -41,7 +41,13 @@ def read_urls(filename: str) -> list:
   if not file_exists(filename):
     print(f'File {filename} does not exist', file=sys.stderr)
     return []
-
+  
+  # Extract the hostname from the filename
+  # filename is in the form of <attribute>_<hostname>
+  # split the filename into <attribute> and <hostname>
+  # and use the hostname to create the full URL
+  hostname = filename.split('_')[1]
+  
   # read the entire apache log into log
   fh = open(filename, 'r')
   log = fh.read()
@@ -54,11 +60,25 @@ def read_urls(filename: str) -> list:
 
   # eliminate duplicates by adding all of them in a dictionary
   for url in urls:
-    url_dict[url] = True
+    full_url = PrefixHost + hostname + url
+    url_dict[full_url] = True
 
   # sort all URL entries stored in the dictionary and return them in a list
   # we sort by retrieving all the keys and return the sorted list
-  return sorted(url_dict.keys())
+  # use custom sort order based on the last part of the URL
+  def sort_key(full_url):
+    """Returns the last part of the URL to be used for sorting
+    if the URL is in the form of /~foo/puzzle-bar-aaab.jpg
+    otherwise returns the URL itself
+    """
+    sort_pattern = r'\S*-\S+-(\S+)\.jpg'
+    m = re.match(sort_pattern, full_url)
+    if m:
+      return m.group(1)
+    return full_url
+  
+  
+  return sorted(url_dict.keys(), key=sort_key)
 
 def download_images(img_urls: list, dest_dir: str)  -> list:
   """Given the urls already in the correct order, downloads
@@ -85,12 +105,12 @@ def download_images(img_urls: list, dest_dir: str)  -> list:
   img_names = []
   for img_url in img_urls:
     # Download URL should be fully qualified
-    d_img_url = WebServerBase + img_url
     img_name = f'img{i}'
     i += 1
     img_names.append(img_name)
     abs_img_file = os.path.join(abs_dst_dir, img_name)
-    request.urlretrieve(d_img_url, abs_img_file)
+    print(f'Retrieving image {img_url} and saving it to {abs_img_file}')
+    request.urlretrieve(img_url, abs_img_file)
 
   return img_names
 
