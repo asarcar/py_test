@@ -10,7 +10,7 @@
 #   kernelspec:
 #     display_name: Python (.venv)
 #     language: python
-#     name: venv
+#     name: .venv
 # ---
 
 # %%
